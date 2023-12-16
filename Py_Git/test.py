@@ -25,8 +25,9 @@ def check_changes_and_commit():
         repo.index.commit(commit_message)
 
         # Отправляем изменения на удаленный репозиторий
-        remote = repo.create_remote('origin', remote_url)
-        remote.push(refspec='master:master')
+        #remote = repo.create_remote('origin', remote_url)
+        #remote.push(refspec='main:main')
+        repo.git.push("--all", 'origin', remote_url)
         print('Изменения успешно отправлены на удаленный репозиторий.')
     else:
         print('Изменений не обнаружено.')
@@ -35,3 +36,6 @@ def check_changes_and_commit():
 while True:
     check_changes_and_commit()
     time.sleep(60)  # 3600 секунд = 1 час
+
+if __name__ == "__main__":
+    main()
