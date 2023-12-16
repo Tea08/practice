@@ -1,43 +1,37 @@
 import os
 import time
-import git
-from git import Repo
+from git import Repo, Remote
 
-# Пути к выбранным директориям и файлам
-watched_paths = "C:\Users\TEA\code\future\sand"
+# Путь к директории, которую нужно отслеживать
+dir_path = 'C:/Users/TEA/code/practice'
 
-# Функция для добавления всех изменений в локальный репозиторий и создания коммита
-def commit_changes(repo, message):
-    repo.git.add(update=True)
-    repo.index.commit(message)
-    print("Изменения добавлены в локальный репозиторий")
+# Подключение к локальному репозиторию Git
+repo = Repo(dir_path)
 
-# Функция для отправки изменений на удаленный репозиторий (GitHub)
-def push_to_remote(repo, remote_name="origin"):
-    repo.git.push("--all", remote_name)
-    print("Изменения отправлены на удаленный репозиторий")
+# URL удаленного репозитория Git
+remote_url = 'https://github.com/Tea08/practice.git'
 
-# Функция для проверки изменений в выбранных директориях и файлах
-def check_for_changes(repo, paths):
-    for path in paths:
-        if os.path.exists(path):
-            repo.index.add([path])
-            diff = repo.git.diff(repo.head.commit, path)
-            if diff:
-                print(f"Обнаружены изменения в {path}.")
-                commit_message = f"Изменения в {path}"
-                commit_changes(repo, commit_message)
-                push_to_remote(repo)
-        else:
-            print(f"Путь {path} не существует.")
+# Функция для проверки изменений и создания коммита
+def check_changes_and_commit():
+    # Получаем список измененных файлов
+    changed_files = [item.a_path for item in repo.index.diff(None)]
+    
+    if changed_files:
+        # Добавляем все изменения в локальный репозиторий
+        repo.index.add(changed_files)
+        
+        # Создаем коммит с автоматическим сообщением
+        commit_message = f'Auto commit: {time.strftime("%Y-%m-%d %H:%M:%S")}'
+        repo.index.commit(commit_message)
 
-# Основная функция, которая выполняет проверку изменений с заданным интервалом времени
-def main():
-    repo_path = "путь/к/локальному/репозиторию"
-    repo = Repo(repo_path)
-    while True:
-        check_for_changes(repo, watched_paths)
-        time.sleep(60)  # Интервал проверки изменений (в секундах)
+        # Отправляем изменения на удаленный репозиторий
+        remote = repo.create_remote('origin', remote_url)
+        remote.push(refspec='master:master')
+        print('Изменения успешно отправлены на удаленный репозиторий.')
+    else:
+        print('Изменений не обнаружено.')
 
-if __name__ == "__main__":
-    main()
+# Периодически проверяем изменения раз в час
+while True:
+    check_changes_and_commit()
+    time.sleep(3600)  # 3600 секунд = 1 час
