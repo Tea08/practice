@@ -34,4 +34,4 @@ def check_changes_and_commit():
 # Периодически проверяем изменения раз в час
 while True:
     check_changes_and_commit()
-    time.sleep(360)  # 3600 секунд = 1 час
+    time.sleep(60)  # 3600 секунд = 1 час
