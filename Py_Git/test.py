@@ -27,7 +27,7 @@ def check_changes_and_commit():
         # Отправляем изменения на удаленный репозиторий
         #remote = repo.create_remote('origin', remote_url)
         #remote.push(refspec='main:main')
-        repo.git.push("--all", 'origin', remote_url)
+        repo.git.push("--all", 'origin')
         print('Изменения успешно отправлены на удаленный репозиторий.')
     else:
         print('Изменений не обнаружено.')
