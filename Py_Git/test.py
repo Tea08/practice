@@ -1,6 +1,6 @@
-import os
+
 import time
-from git import Repo, Remote
+from git import Repo
 
 # Путь к директории, которую нужно отслеживать
 dir_path = 'C:/Users/TEA/code/practice'
