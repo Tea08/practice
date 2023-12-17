@@ -18,7 +18,7 @@ def check_changes_and_commit():  # Функция для проверки изм
 
 while True:    # Периодически проверяем изменения раз в час
     check_changes_and_commit()
-    time.sleep(120)  # 3600 секунд = 1 час
+    time.sleep(180)  # 3600 секунд = 1 час
 
 if __name__ == "__main__":
     main()
