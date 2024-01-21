@@ -29,8 +29,13 @@ while True:    #Обработка запросов от клиента
    if not data:
       break
    print(f"Получено от клиента: {data.decode()}")   
-   response = "Сообщение получено!"    # Отправка ответа клиенту
-   client_socket.send(response.encode())   
+
+   if data.decode() == "exit":     # Проверка на сообщение "exit"
+      response = "Соединение разорвано"
+      client_socket.send(response.encode())
+      break
+   else:
+      response = "Сообщение получено!"
+      client_socket.send(response.encode())     
 
 client_socket.close()      # Закрытие соединения
-#server_socket.close()
